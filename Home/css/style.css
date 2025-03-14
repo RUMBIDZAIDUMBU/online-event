@@ -1,0 +1,158 @@
+/* General Styles */
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+h1,
+h2,
+h5 {
+  font-family: "Arial", sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  margin-bottom: 20px;
+  background-color: #000;
+}
+
+.navbar-brand img {
+  width: 50%; /* Adjust the percentage to make it smaller */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.nav-link {
+  font-size: 1.1rem;
+}
+
+.navbar-nav .nav-item {
+  margin-left: 15px;
+}
+
+.navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffd700;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.hero p {
+  font-size: 1.2rem;
+}
+
+/* Featured Events Section */
+.container {
+  max-width: 1200px;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.view-detail-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-detail-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+  background-color: #343a40;
+  color: white;
+  font-size: 1rem;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+  color: #ffd700;
+}
+
+footer a:hover {
+  text-decoration: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .card-img-top {
+    height: 150px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+  }
+
+  .view-detail-btn {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-toggler {
+    border-color: #fff;
+  }
+
+  .navbar-nav {
+    margin-top: 10px;
+  }
+
+  .card {
+    margin-bottom: 20px;
+  }
+}
