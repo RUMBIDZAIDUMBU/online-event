@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event List</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Event List</h1>
+
+      <a href="/Assets/Pages/create-form/index.html" class="btn btn-primary"
+        >Add Event</a
+      >
+      <table class="table table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Early Bird Price ($)</th>
+            <th>VIP Price ($)</th>
+            <th>General Price ($)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="events-table-body">
+          <!-- Events will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+
+    <script src="/Assets/Pages/create-list/js/create-list.js"></script>
+  </body>
+</html>

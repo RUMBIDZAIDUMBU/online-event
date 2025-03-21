@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="/Assets/Pages/payment/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="payment-container">
+      <h2>Payment Form</h2>
+      <form id="payment-form">
+        <label for="name">First Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your first name"
+          required
+        />
+
+        <label for="surname">Surname:</label>
+        <input
+          type="text"
+          id="surname"
+          name="surname"
+          placeholder="Enter your surname"
+          required
+        />
+
+        <label for="phone">Phone Number:</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="Enter your phone number"
+          required
+        />
+
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label for="quantity">Quantity:</label>
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          min="1"
+          value="1"
+          required
+        />
+
+        <p><strong>Unit Price:</strong> $<span id="unit-price">10.00</span></p>
+        <p>
+          <strong>Total Amount:</strong> <span id="total-amount">$10.00</span>
+        </p>
+
+        <label for="payment-method">Select Payment Method:</label>
+        <select id="payment-method" name="payment-method" required>
+          <option value="">-- Choose Payment Method --</option>
+          <option value="ecocash">Ecocash</option>
+          <option value="one_money">One Money</option>
+          <option value="innbucks">InnBucks</option>
+          <option value="paynow">Paynow (Online Payment)</option>
+        </select>
+
+        <div id="paynow-options" class="hidden">
+          <label for="paynow-channel">Select Paynow Channel:</label>
+          <select id="paynow-channel">
+            <option value="visa">Visa/MasterCard</option>
+            <option value="zipit">ZIPIT</option>
+            <option value="ecocash-paynow">Ecocash (via Paynow)</option>
+            <option value="one-money-paynow">One Money (via Paynow)</option>
+          </select>
+        </div>
+
+        <button type="submit">Proceed to Payment</button>
+      </form>
+    </div>
+
+    <script src="/Assets/Pages/payment/js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get references to the elements
+        const paymentForm = document.getElementById("payment-form");
+        const paymentMethodSelect = document.getElementById("payment-method");
+        const paynowOptions = document.getElementById("paynow-options");
+
+        // Get the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventTitle = urlParams.get("eventTitle");
+        const ticketType = urlParams.get("ticketType");
+        const quantity = parseInt(urlParams.get("quantity"));
+        const total = urlParams.get("total");
+        const unitPrice = urlParams.get("unitPrice");
+
+        //set the heading
+        const paymentTitle = document.querySelector("h2"); // Corrected selector
+        if (paymentTitle) {
+          paymentTitle.textContent = `Payment for ${eventTitle}`;
+        }
+
+        // Populate the form with the data from the URL
+        const quantityInput = document.getElementById("quantity");
+        const totalAmountSpan = document.getElementById("total-amount");
+        const unitPriceSpan = document.getElementById("unit-price");
+
+        if (quantityInput) {
+          quantityInput.value = quantity;
+        }
+        if (totalAmountSpan) {
+          totalAmountSpan.textContent = total;
+        }
+        if (unitPriceSpan) {
+          unitPriceSpan.textContent = unitPrice;
+        }
+
+        // Event listener for the payment method select
+        if (paymentMethodSelect) {
+          paymentMethodSelect.addEventListener("change", function () {
+            if (this.value === "paynow") {
+              paynowOptions.classList.remove("hidden");
+            } else {
+              paynowOptions.classList.add("hidden");
+            }
+          });
+        }
+
+        // Event listener for the payment form submission
+        if (paymentForm) {
+          paymentForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the form values
+            const name = document.getElementById("name").value;
+            const surname = document.getElementById("surname").value;
+            const phone = document.getElementById("phone").value;
+            const email = document.getElementById("email").value;
+            const paymentMethod = paymentMethodSelect.value;
+
+            //build an alert
+            let message = `
+                Payment Details:
+                Name: ${name} ${surname}
+                Phone: ${phone}
+                Email: ${email}
+                Quantity: ${quantity}
+                Total Amount: $${total}
+                Payment Method: ${paymentMethod}
+            `;
+
+            if (paymentMethod === "paynow") {
+              const paynowChannel =
+                document.getElementById("paynow-channel").value;
+              message += `
+                    Paynow Channel: ${paynowChannel}
+                `;
+            }
+
+            // Display a confirmation message (replace with actual payment processing)
+            alert(message);
+
+            // You would typically send this data to a server for processing
+            //  window.location.href = "/confirmation.html"; // Redirect to a confirmation page
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

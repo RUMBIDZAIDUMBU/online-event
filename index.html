@@ -8,13 +8,18 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="Assets/Styles/styles.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#"
-          >RTG Tickets</a>
+        <a class="navbar-brand" href="#">
+          <img
+            src="./Assets/Images/logo.png"
+            alt="Logo"
+            style="width: 100px; height: auto"
+          />
+        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -29,19 +34,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/ContactUs/index.html">Contact</a>
+              <a class="nav-link" href="Assets/Pages/ContactUs/index.html"
+                >Contact</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/login/index.html" class="admin"
-                >Admin Login</a
-              >
+              <a class="nav-link" href="Assets/Pages/login/index.html">Login</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <header class="hero bg-primary text-white text-center py-5">
+    <header class="hero text-white text-center py-5">
       <h1>Find Your Next Event</h1>
       <p class="lead">
         Browse through exciting events and book your tickets today!
@@ -50,14 +55,288 @@
 
     <section class="container py-5">
       <h2 class="text-center mb-4">Featured Events</h2>
-      <div class="row" id="featuredEvents"></div>
+      <div class="row" id="eventCards"></div>
     </section>
 
-    <footer class="bg-dark text-white text-center py-4">
-      <p>&copy; 2025 Event Ticketing System | All Rights Reserved hh</p>
+    <div
+      class="modal fade"
+      id="ticketModal"
+      tabindex="-1"
+      aria-labelledby="ticketModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ticketModalLabel">Select Tickets</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h6 id="modalEventTitle"></h6>
+            <p id="modalEventDescription"></p>
+            <p id="modalEventDate"></p>
+            <p id="modalEventLocation"></p>
+
+            <div class="mb-3">
+              <label for="ticketType" class="form-label">Ticket Type</label>
+              <select class="form-select" id="ticketType">
+                <option value="general">General</option>
+                <option value="earlyBird">Early Bird</option>
+                <option value="vip">VIP</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="ticketQuantity" class="form-label">Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                id="ticketQuantity"
+                value="1"
+                min="1"
+              />
+            </div>
+
+            <p>Total: $<span id="totalPrice">0</span></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="confirmPurchase">
+              Buy Tickets
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-3">
+            <img
+              src="./Assets/images/logo.png"
+              alt="Company Logo"
+              style="width: 100px; height: auto"
+              class="mb-3"
+            />
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h3>About Us</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">Our Story</a></li>
+              <li><a href="#">Mission</a></li>
+              <li><a href="#">Team</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h3>Contact Us</h3>
+            <ul class="list-unstyled">
+              <li>Phone: +263 772 298 779</li>
+              <li>Email: bookings@gatewaystream.com</li>
+              <li>Address: 1 Pennefather Avenue Harare Zimbabwe</li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-12 mb-4">
+            <h3>Follow Us</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">Facebook</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Instagram</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <p class="text-muted">
+              &copy; 2025 Event Tickets. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/Home/js/banner.js"></script>
+    <script src="Assets/Pages/Home/js/banner.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const events = [
+          {
+            title: "Harare International Festival of the Arts (HIFA)",
+            description: "A celebration of arts and culture in Zimbabwe.",
+            date: "2024-04-28",
+            location: "Harare Gardens, Harare",
+            earlyBirdPrice: 30,
+            vipPrice: 80,
+            generalPrice: 45,
+            imageUrl: "https://via.placeholder.com/400x200?text=HIFA",
+          },
+          {
+            title: "Victoria Falls Carnival",
+            description: "A vibrant music and adventure festival.",
+            date: "2024-12-29",
+            location: "Victoria Falls Town",
+            earlyBirdPrice: 50,
+            vipPrice: 120,
+            generalPrice: 70,
+            imageUrl:
+              "https://via.placeholder.com/400x200?text=Vic+Falls+Carnival",
+          },
+          {
+            title: "Shoko Festival",
+            description: "Zimbabwe's biggest urban culture festival.",
+            date: "2024-09-27",
+            location: "Harare Various Locations",
+            earlyBirdPrice: 25,
+            vipPrice: 60,
+            generalPrice: 35,
+            imageUrl: "https://via.placeholder.com/400x200?text=Shoko+Festival",
+          },
+          {
+            title: "Zimdancehall Awards",
+            description: "Celebrating the best of Zimbabwean dancehall music.",
+            date: "2024-11-15",
+            location: "Harare International Conference Centre",
+            earlyBirdPrice: 35,
+            vipPrice: 90,
+            generalPrice: 55,
+            imageUrl:
+              "https://via.placeholder.com/400x200?text=Zimdancehall+Awards",
+          },
+          {
+            title: "ZITF (Zimbabwe International Trade Fair)",
+            description: "An international trade exhibition.",
+            date: "2024-04-23",
+            location: "Bulawayo",
+            earlyBirdPrice: 20,
+            vipPrice: 70,
+            generalPrice: 30,
+            imageUrl: "https://via.placeholder.com/400x200?text=ZITF",
+          },
+        ];
+
+        const eventContainer = document.getElementById("eventCards");
+        const ticketModal = new bootstrap.Modal(
+          document.getElementById("ticketModal")
+        );
+        let selectedEvent;
+        let ticketType;
+        let quantity;
+        let total;
+
+        events.forEach((event) => {
+          const eventCard = `
+                  <div class="col-md-4 mb-4">
+                          <div class="card shadow-lg h-100">
+                                  <img src="${
+                                    event.imageUrl
+                                  }" class="card-img-top" alt="${
+            event.title
+          }" />
+                                  <div class="card-body">
+                                          <h5 class="card-title">${
+                                            event.title
+                                          }</h5>
+                                          <p class="card-text"><strong>Description:</strong> ${
+                                            event.description
+                                          }</p>
+                                          <p class="card-text"><strong>Date:</strong> ${
+                                            event.date
+                                          }</p>
+                                          <p class="card-text"><strong>Location:</strong> ${
+                                            event.location
+                                          }</p>
+                                          <p class="card-text"><strong>Early Bird Price:</strong> $${
+                                            event.earlyBirdPrice
+                                          }</p>
+                                          <p class="card-text"><strong>VIP Price:</strong> $${
+                                            event.vipPrice
+                                          }</p>
+                                          <p class="card-text"><strong>General Price:</strong> $${
+                                            event.generalPrice
+                                          }</p>
+                                  </div>
+                                  <div class="card-footer bg-white border-top-0">
+                                          <div class="d-grid">
+                                                  <button class="btn btn-primary buy-ticket" data-index="${events.indexOf(
+                                                    event
+                                                  )}">BUY TICKET</button>
+                                          </div>
+                                  </div>
+                          </div>
+                  </div>
+          `;
+
+          eventContainer.innerHTML += eventCard;
+        });
+
+        document.querySelectorAll(".buy-ticket").forEach((button) => {
+          button.addEventListener("click", function () {
+            const index = parseInt(this.getAttribute("data-index"));
+            selectedEvent = events[index];
+            document.getElementById("modalEventTitle").textContent =
+              selectedEvent.title;
+            document.getElementById("modalEventDescription").textContent =
+              selectedEvent.description;
+            document.getElementById("modalEventDate").textContent =
+              selectedEvent.date;
+            document.getElementById("modalEventLocation").textContent =
+              selectedEvent.location;
+            updateTotalPrice();
+            ticketModal.show();
+          });
+        });
+
+        document
+          .getElementById("ticketType")
+          .addEventListener("change", updateTotalPrice);
+        document
+          .getElementById("ticketQuantity")
+          .addEventListener("input", updateTotalPrice);
+
+        function updateTotalPrice() {
+          const type = document.getElementById("ticketType").value;
+          quantity = parseInt(document.getElementById("ticketQuantity").value);
+          let price = 0;
+
+          if (type === "general") price = selectedEvent.generalPrice;
+          else if (type === "earlyBird") price = selectedEvent.earlyBirdPrice;
+          else if (type === "vip") price = selectedEvent.vipPrice;
+
+          document.getElementById("totalPrice").textContent = price * quantity;
+        }
+
+        document
+          .getElementById("confirmPurchase")
+          .addEventListener("click", function () {
+            ticketType = document.getElementById("ticketType").value;
+            quantity = parseInt(
+              document.getElementById("ticketQuantity").value
+            );
+            total = document.getElementById("totalPrice").textContent;
+            // Redirect to the payment page with ticket details as query parameters
+            const paymentUrl = `Assets/Pages/payment/index.html?eventTitle=${encodeURIComponent(
+              selectedEvent.title
+            )}&ticketType=${encodeURIComponent(
+              ticketType
+            )}&quantity=${quantity}&total=${total}&unitPrice=${(
+              parseFloat(total) / quantity
+            ).toFixed(2)}`;
+            window.location.href = paymentUrl;
+            ticketModal.hide();
+          });
+      });
+    </script>
   </body>
 </html>
