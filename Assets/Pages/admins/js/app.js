@@ -1,23 +1,28 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Handle Delete Button Click
+document.addEventListener("DOMContentLoaded", () => {
+  // Handle Delete Button Click for .btn-danger
   document.querySelectorAll(".btn-danger").forEach((button) => {
-    button.addEventListener("click", function () {
-      if (confirm("Are you sure you want to delete this item?")) {
-        this.closest("tr").remove(); // Removes the row
+    button.addEventListener("click", (e) => {
+      const row = e.target.closest("tr");
+      if (row && confirm("Are you sure you want to delete this item?")) {
+        row.remove(); // Removes the table row
       }
     });
   });
 
-  // Handle Edit Button Click
+  // Handle Edit Button Click for .btn-info
   document.querySelectorAll(".btn-info").forEach((button) => {
-    button.addEventListener("click", function () {
-      const row = this.closest("tr");
-      const columns = row.querySelectorAll("td");
+    button.addEventListener("click", (e) => {
+      const row = e.target.closest("tr");
+      if (!row) return; // Exit if no row found
 
-      // Example for managing events
-      if (row.parentElement.parentElement.id === "manage-events") {
+      const columns = row.querySelectorAll("td");
+      const tableId = row.parentElement.parentElement.id;
+
+      // Edit logic for manage-events table
+      if (tableId === "manage-events" && columns.length >= 3) {
         const eventName = columns[1].textContent;
         const eventDate = columns[2].textContent;
+
         const newName = prompt("Edit Event Name:", eventName);
         const newDate = prompt("Edit Event Date (YYYY-MM-DD):", eventDate);
 
@@ -27,10 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // Example for managing users
-      if (row.parentElement.parentElement.id === "manage-users") {
+      // Edit logic for manage-users table
+      if (tableId === "manage-users" && columns.length >= 3) {
         const userName = columns[1].textContent;
         const userEmail = columns[2].textContent;
+
         const newUserName = prompt("Edit User Name:", userName);
         const newUserEmail = prompt("Edit User Email:", userEmail);
 

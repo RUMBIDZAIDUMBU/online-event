@@ -1,66 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const events = [
-    {
-      title: "Harare International Festival of the Arts (HIFA)",
-      description: "Zimbabwe's premier arts and culture festival.",
-      date: "2025-04-28",
-      weekday: "friday",
-      eventType: "festival",
-      category: "culture",
-      location: "Harare Gardens, Harare",
-      earlyBirdPrice: 20,
-      vipPrice: 50,
-      generalPrice: 30,
-      imageUrl:
-        "https://img.freepik.com/free-vector/sporting-event-poster-2021-with-photo_52683-41077.jpg?ga=GA1.1.836145345.1742459530&semt=ais_hybrid",
-    },
-    {
-      title: "Zim Afro T10 Cricket Tournament",
-      description: "Fast-paced cricket action featuring international stars.",
-      date: "2025-07-20",
-      weekday: "sunday",
-      eventType: "sports",
-      category: "sports",
-      location: "Harare Sports Club, Harare",
-      earlyBirdPrice: 15,
-      vipPrice: 40,
-      generalPrice: 25,
-      imageUrl:
-        "https://img.freepik.com/free-vector/sporting-event-poster-2021-with-photo_52683-41077.jpg?ga=GA1.1.836145345.1742459530&semt=ais_hybrid",
-    },
-    {
-      title: "Chimanimani Arts Festival",
-      description: "A celebration of arts in the scenic Eastern Highlands.",
-      date: "2025-09-12",
-      weekday: "saturday",
-      eventType: "festival",
-      category: "culture",
-      location: "Chimanimani, Manicaland",
-      earlyBirdPrice: 10,
-      vipPrice: 30,
-      generalPrice: 20,
-      imageUrl:
-        "https://img.freepik.com/free-psd/flat-design-music-festival-template_23-2149340666.jpg?ga=GA1.1.836145345.1742459530&semt=ais_hybrid",
-    },
-    {
-      title: "Mapopoma Festival",
-      description: "Victoria Falls Music Festival.",
-      date: "2025-12-31",
-      weekday: "wednesday",
-      eventType: "festival",
-      category: "music",
-      location: "Victoria Falls",
-      earlyBirdPrice: 50,
-      vipPrice: 100,
-      generalPrice: 75,
-      imageUrl:
-        "https://img.freepik.com/free-psd/flat-design-music-festival-template_23-2149340666.jpg?ga=GA1.1.836145345.1742459530&semt=ais_hybrid",
-    },
-  ];
-
-  // Use cartManager to manage the cart state
-  let cart = window.cartManager.getCart();
-  const eventContainer = document.getElementById("eventCards");
+document.addEventListener("DOMContentLoaded", async () => {
+  // Initialize cart from cartManager (assuming it exists globally)
+  let cart = window.cartManager ? window.cartManager.getCart() : [];
+  const eventContainer = document.getElementById("eventCards"); // Updated ID to match new version
   const ticketModal = new bootstrap.Modal(
     document.getElementById("ticketModal")
   );
@@ -83,14 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
   particlesJS("particles-js", {
     particles: {
       number: { value: 80, density: { enable: true, value_area: 800 } },
-      color: { value: "#67d4d1" }, // Brand brighter teal
+      color: { value: "#67d4d1" },
       shape: { type: "circle" },
       opacity: { value: 0.5, random: true },
       size: { value: 3, random: true },
       line_linked: {
         enable: true,
         distance: 150,
-        color: "#4fbdba", // Brand teal
+        color: "#4fbdba",
         opacity: 0.4,
         width: 1,
       },
@@ -119,10 +60,75 @@ document.addEventListener("DOMContentLoaded", () => {
     retina_detect: true,
   });
 
-  function updateCartDisplay() {
-    // Sync cart with localStorage
-    cart = window.cartManager.getCart();
+  // Fetch events from API
+  let events = [];
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/ticketing/ticket/banner/active-tickets",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
+    if (!response.ok) {
+      throw new Error(`Failed to fetch events: ${response.status}`);
+    }
+
+    const ticketList = await response.json();
+    events = await Promise.all(
+      ticketList.map(async (ticket) => {
+        const imageUrl = await getEventImage(ticket.id);
+        return {
+          id: ticket.id, // Added for API reference
+          title: ticket.title,
+          description: ticket.description,
+          date: ticket.date || "TBD", // Assuming API might provide this
+          weekday:
+            ticket.weekday ||
+            new Date(ticket.date)
+              .toLocaleString("en-us", { weekday: "long" })
+              .toLowerCase(),
+          eventType: ticket.eventType || "festival", // Default if not provided
+          category: ticket.category || "culture", // Default if not provided
+          location: ticket.location || "TBD",
+          earlyBirdPrice: ticket.earlyBirdPrice || 20, // Default prices
+          vipPrice: ticket.vipPrice || 50,
+          generalPrice: ticket.generalPrice || 30,
+          imageUrl: imageUrl,
+        };
+      })
+    );
+
+    renderEvents(events);
+    updateCartDisplay();
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    eventContainer.innerHTML =
+      "<p>Failed to load events. Please try again later.</p>";
+  }
+
+  // Fetch event image from API
+  async function getEventImage(ticketId) {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/ticketing/image/get-image?ticketId=${ticketId}`,
+        { method: "GET" }
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.status}`);
+      }
+      const blob = await response.blob();
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("Error fetching image:", error);
+      return "../event/img/default.png";
+    }
+  }
+
+  // Update cart display
+  function updateCartDisplay() {
+    cart = window.cartManager ? window.cartManager.getCart() : cart;
     const cartCount = document.getElementById("cartCount");
     const cartItems = document.getElementById("cartItems");
     const cartTotalTickets = document.getElementById("cartTotalTickets");
@@ -169,51 +175,38 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".remove-item").forEach((button) => {
       button.addEventListener("click", function () {
         const index = parseInt(this.getAttribute("data-index"));
-        window.cartManager.removeFromCart(index); // Update localStorage
+        if (window.cartManager) window.cartManager.removeFromCart(index);
+        else cart.splice(index, 1); // Fallback if cartManager isn't available
         updateCartDisplay();
       });
     });
   }
 
+  // Render events
   function renderEvents(filteredEvents) {
     eventContainer.innerHTML = "";
     filteredEvents.forEach((event, index) => {
       const eventCard = `
-              <div class="col-md-6 col-lg-4">
-                <div class="card shadow-lg">
-                  <img src="${event.imageUrl}" class="card-img-top" alt="${event.title}" />
-                  <div class="card-body">
-                    <h5 class="card-title">${event.title}</h5>
-                    <p class="card-text">
-                      <strong>Description:</strong> ${event.description}
-                    </p>
-                    <p class="card-text"><strong>Date:</strong> ${event.date}</p>
-                    <p class="card-text">
-                      <strong>Location:</strong> ${event.location}
-                    </p>
-                    <p class="card-text">
-                      <strong>Early Bird Price:</strong> $${event.earlyBirdPrice}
-                    </p>
-                    <p class="card-text">
-                      <strong>VIP Price:</strong> $${event.vipPrice}
-                    </p>
-                    <p class="card-text">
-                      <strong>General Price:</strong> $${event.generalPrice}
-                    </p>
-                  </div>
-                  <div class="card-footer">
-                    <div class="d-grid">
-                      <button
-                        class="btn btn-primary buy-ticket"
-                        data-index="${index}"
-                      >
-                        Buy Ticket
-                      </button>
-                    </div>
-                  </div>
-                </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-lg">
+            <img src="${event.imageUrl}" class="card-img-top" alt="${event.title}" />
+            <div class="card-body">
+              <h5 class="card-title">${event.title}</h5>
+              <p class="card-text"><strong>Description:</strong> ${event.description}</p>
+              <p class="card-text"><strong>Date:</strong> ${event.date}</p>
+              <p class="card-text"><strong>Location:</strong> ${event.location}</p>
+              <p class="card-text"><strong>Early Bird Price:</strong> $${event.earlyBirdPrice}</p>
+              <p class="card-text"><strong>VIP Price:</strong> $${event.vipPrice}</p>
+              <p class="card-text"><strong>General Price:</strong> $${event.generalPrice}</p>
+            </div>
+            <div class="card-footer">
+              <div class="d-grid">
+                <button class="btn btn-primary buy-ticket" data-index="${index}">Buy Ticket</button>
               </div>
-            `;
+            </div>
+          </div>
+        </div>
+      `;
       eventContainer.innerHTML += eventCard;
     });
 
@@ -228,16 +221,17 @@ document.addEventListener("DOMContentLoaded", () => {
           selectedEvent.description;
         document.getElementById(
           "modalEventDate"
-        ).textContent = `Date: ${event.date}`;
+        ).textContent = `Date: ${selectedEvent.date}`;
         document.getElementById(
           "modalEventLocation"
-        ).textContent = `Location: ${event.location}`;
+        ).textContent = `Location: ${selectedEvent.location}`;
         updateTotalPrice();
         ticketModal.show();
       });
     });
   }
 
+  // Filter events
   function filterEvents() {
     const weekday = document.getElementById("weekdaysFilter").value;
     const eventType = document.getElementById("eventTypeFilter").value;
@@ -254,25 +248,18 @@ document.addEventListener("DOMContentLoaded", () => {
     renderEvents(filteredEvents);
   }
 
+  // Event listeners for filters
   document
     .getElementById("weekdaysFilter")
-    .addEventListener("change", filterEvents);
+    ?.addEventListener("change", filterEvents);
   document
     .getElementById("eventTypeFilter")
-    .addEventListener("change", filterEvents);
+    ?.addEventListener("change", filterEvents);
   document
     .getElementById("categoryFilter")
-    .addEventListener("change", filterEvents);
+    ?.addEventListener("change", filterEvents);
 
-  renderEvents(events);
-
-  document
-    .getElementById("ticketType")
-    .addEventListener("change", updateTotalPrice);
-  document
-    .getElementById("ticketQuantity")
-    .addEventListener("input", updateTotalPrice);
-
+  // Update total price in modal
   function updateTotalPrice() {
     const type = document.getElementById("ticketType").value;
     const quantity =
@@ -288,7 +275,15 @@ document.addEventListener("DOMContentLoaded", () => {
     ).toFixed(2);
   }
 
-  document.getElementById("addToCart").addEventListener("click", function () {
+  document
+    .getElementById("ticketType")
+    ?.addEventListener("change", updateTotalPrice);
+  document
+    .getElementById("ticketQuantity")
+    ?.addEventListener("input", updateTotalPrice);
+
+  // Add to cart
+  document.getElementById("addToCart")?.addEventListener("click", function () {
     const ticketType = document.getElementById("ticketType").value;
     const quantity =
       parseInt(document.getElementById("ticketQuantity").value) || 1;
@@ -306,13 +301,15 @@ document.addEventListener("DOMContentLoaded", () => {
       imageUrl: selectedEvent.imageUrl,
     };
 
-    window.cartManager.addToCart(cartItem); // Save to localStorage
+    if (window.cartManager) window.cartManager.addToCart(cartItem);
+    else cart.push(cartItem); // Fallback if cartManager isn't available
     updateCartDisplay();
     ticketModal.hide();
   });
 
-  document.getElementById("checkout").addEventListener("click", function () {
-    cart = window.cartManager.getCart(); // Sync with localStorage
+  // Checkout
+  document.getElementById("checkout")?.addEventListener("click", function () {
+    cart = window.cartManager ? window.cartManager.getCart() : cart;
     if (cart.length > 0) {
       const totalAmount = cart.reduce(
         (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
@@ -334,33 +331,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Add Routing Animation to Navigation Links
+  // Navigation and footer link animations
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
       if (href && href !== "#" && !href.includes("modal")) {
-        // Exclude modal links
         e.preventDefault();
-        showLoadingAnimation(() => {
-          window.location.href = href;
-        });
+        showLoadingAnimation(() => (window.location.href = href));
       }
     });
   });
 
-  // Add Routing Animation to Footer Links
   document.querySelectorAll(".footer-link").forEach((link) => {
     link.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
       if (href && href !== "#" && !href.includes("modal")) {
         e.preventDefault();
-        showLoadingAnimation(() => {
-          window.location.href = href;
-        });
+        showLoadingAnimation(() => (window.location.href = href));
       }
     });
   });
-
-  // Initial cart display update
-  updateCartDisplay();
 });
