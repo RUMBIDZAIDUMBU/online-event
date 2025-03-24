@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Artist</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --brand-primary: #0891b2;
+        --brand-primary-dark: #06728c;
+        --brand-success: #28a745;
+        --brand-danger: #dc3545;
+      }
+      body {
+        font-family: "Baloo 2", cursive;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--brand-primary);
+      }
+      form {
+        margin-top: 20px;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="number"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-family: "Baloo 2", cursive;
+      }
+      button {
+        background-color: var(--brand-primary);
+        color: white;
+        padding: 10px 20px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        font-family: "Baloo 2", cursive;
+      }
+      button:hover {
+        background-color: var(--brand-primary-dark);
+      }
+      .text-success {
+        color: var(--brand-success);
+      }
+      .text-danger {
+        color: var(--brand-danger);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">Add Artist</h1>
+      <form id="artist-form">
+        <div class="mb-3">
+          <label for="artistName" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="artistName"
+            name="artistName"
+            placeholder="Enter artist name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="artistDescription" class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            id="artistDescription"
+            name="artistDescription"
+            rows="4"
+            placeholder="Write a brief description about the artist"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Artist</button>
+      </form>
+      <p id="success-message" class="text-success mt-3" style="display: none">
+        Artist saved successfully!
+      </p>
+      <p id="error-message" class="text-danger mt-3" style="display: none">
+        An error occurred while saving the artist.
+      </p>
+    </div>
+    <script src="/Assets/Pages/artist-form/js/artistForm.js"></script>
+  </body>
+</html>

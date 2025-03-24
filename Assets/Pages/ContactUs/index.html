@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Assets/Styles/styles.css" />
+    <link rel="stylesheet" href="/Assets/Pages/ContactUs/css/style.css" />
+    <title>Contact Us</title>
+  </head>
+  <body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="loader"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/index.html">
+          <img
+            src="/Assets/images/logo.png"
+            alt="Gateway Stream Logo"
+            height="40"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item nav-animate group-general">
+              <a class="nav-link" href="/index.html"
+                ><i class="bi bi-house-door me-1"></i> Home</a
+              >
+            </li>
+            <li class="nav-item nav-animate group-general">
+              <a class="nav-link" href="/Assets/Pages/about/index.html"
+                ><i class="bi bi-info-circle me-1"></i> About Us</a
+              >
+            </li>
+            <li class="nav-item nav-animate group-general">
+              <a class="nav-link" href="/Assets/Pages/faq/index.html"
+                ><i class="bi bi-question-circle me-1"></i> FAQ</a
+              >
+            </li>
+            <li class="nav-item nav-animate group-contact">
+              <a
+                class="nav-link active"
+                href="/Assets/Pages/ContactUs/index.html"
+                ><i class="bi bi-envelope me-1"></i> Contact Us</a
+              >
+            </li>
+            <li class="nav-item nav-animate group-accounts">
+              <a class="nav-link" href="/Assets/Pages/login/index.html"
+                ><i class="bi bi-person-lock me-1"></i> Admin Login</a
+              >
+            </li>
+            <li class="nav-item nav-animate group-accounts">
+              <a
+                class="nav-link"
+                href="/Assets/Pages/event-organiser/index.html"
+                ><i class="bi bi-calendar-event me-1"></i> Event Organiser
+                Accounts</a
+              >
+            </li>
+            <li class="nav-item nav-animate group-cart">
+              <a
+                class="nav-link cart-link"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#cartModal"
+              >
+                <svg
+                  class="cart-icon me-1"
+                  id="cartIcon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="white"
+                >
+                  <path
+                    d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-9.8-3.2l-.2-.8H5.6c-.6 0-1.1-.5-1.1-1.1V5c0-.6.5-1 1-1h14.4c.5 0 1 .4 1 1v8c0 .6-.5 1.1-1.1 1.1H9.2l-.2.8c-.1.3-.4.5-.7.5H7c-.6 0-1.1-.5-1.1-1.1 0-.3.1-.5.3-.7z"
+                  />
+                </svg>
+                Cart <span id="cartCount">0</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-section fade-in">
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div class="touch">
+              <h1 class="contact-title">Get In Touch With Us</h1>
+              <p class="contact-text">
+                Have an enquiry or some feedback for us? Fill out the form below
+                to contact our team.
+              </p>
+              <form
+                class="contact-form"
+                id="contact-form"
+                action="#"
+                method="post"
+              >
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="contact-form-text form-animate"
+                    id="name"
+                    name="name"
+                    placeholder="Name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    class="contact-form-text form-animate"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <textarea
+                    class="contact-form-text form-animate"
+                    id="message"
+                    name="message"
+                    placeholder="Message"
+                    required
+                  ></textarea>
+                </div>
+                <input
+                  type="submit"
+                  class="contact-form-btn form-animate"
+                  value="Submit"
+                />
+                <div class="form-message" id="formMessage"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div
+      class="modal fade"
+      id="cartModal"
+      tabindex="-1"
+      aria-labelledby="cartModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cartModalLabel">Shopping Cart</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="cartItems"></div>
+            <p>Total Tickets: <span id="cartTotalTickets">0</span></p>
+            <p>Total Amount: $<span id="cartTotalAmount">0.00</span></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="checkout">
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer fade-in">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <a href="/index.html" class="footer-brand footer-link">
+              <img
+                src="/Assets/images/logo.png"
+                alt="Gateway Stream Logo"
+                class="img-fluid"
+              />
+              Gateway Stream
+            </a>
+            <p class="footer-text">
+              Gateway Stream is your go-to platform for event streaming and
+              ticket purchasing in Zimbabwe. Join our community today!
+            </p>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Quick Links</h5>
+            <ul class="footer-nav">
+              <li><a href="/index.html" class="footer-link">Home</a></li>
+              <li>
+                <a href="/Assets/Pages/about/index.html" class="footer-link"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a href="/Assets/Pages/faq/index.html" class="footer-link"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a href="/Assets/Pages/ContactUs/index.html" class="footer-link"
+                  >Contact Us</a
+                >
+              </li>
+              <li>
+                <a href="/Assets/Pages/payment/index.html" class="footer-link"
+                  >Cart</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Contact Us</h5>
+            <p class="footer-text">
+              Phone: <a href="tel:+263772298779">+263 772 298 779</a><br />
+              Email:
+              <a href="mailto:bookings@gatewaystream.com"
+                >bookings@gatewaystream.com</a
+              ><br />
+              Address: 1 Pennefather Avenue, Harare, Zimbabwe
+            </p>
+            <h5>Follow Us</h5>
+            <p class="footer-text">
+              <a href="https://facebook.com" class="footer-link">Facebook</a> |
+              <a href="https://twitter.com" class="footer-link">Twitter</a> |
+              <a href="https://instagram.com" class="footer-link">Instagram</a>
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2025 Gateway Stream. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+      if (!window.particlesJS)
+        document.write('<script src="/Assets/Js/particles.min.js"><\/script>');
+    </script>
+    <script src="/Assets/Pages/js/cart.js"></script>
+    <script src="/Assets/Pages/ContactUs/js/contact-us.js"></script>
+  </body>
+</html>
