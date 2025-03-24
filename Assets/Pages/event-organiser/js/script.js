@@ -1,73 +1,72 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loadingScreen = document.getElementById("loading-screen");
 
-  // Loading Screen
+  // Show loading screen on page load
   loadingScreen.classList.add("active");
   setTimeout(() => {
     loadingScreen.classList.remove("active");
   }, 1000);
 
-  // Particles.js
-  if (window.particlesJS) {
-    particlesJS("particles-js", {
-      particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#4fbdba" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#67d4d1",
-          opacity: 0.4,
-          width: 1,
-        },
-        move: {
-          enable: true,
-          speed: 2,
-          direction: "none",
-          random: false,
-          straight: false,
-          out_mode: "out",
-        },
+  // Initialize Particles.js
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80, density: { enable: true, value_area: 800 } },
+      color: { value: "#4fbdba" }, // Teal to match theme
+      shape: { type: "circle" },
+      opacity: { value: 0.5, random: true },
+      size: { value: 3, random: true },
+      line_linked: {
+        enable: true,
+        distance: 150,
+        color: "#67d4d1",
+        opacity: 0.4,
+        width: 1,
       },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "repulse" },
-          onclick: { enable: true, mode: "push" },
-          resize: true,
-        },
-        modes: {
-          repulse: { distance: 100, duration: 0.4 },
-          push: { particles_nb: 4 },
-        },
+      move: {
+        enable: true,
+        speed: 2,
+        direction: "none",
+        random: false,
+        straight: false,
+        out_mode: "out",
       },
-      retina_detect: true,
-    });
-  } else {
-    console.error("particlesJS not loaded.");
-  }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: {
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" },
+        resize: true,
+      },
+      modes: {
+        repulse: { distance: 100, duration: 0.4 },
+        push: { particles_nb: 4 },
+      },
+    },
+    retina_detect: true,
+  });
 
-  // Contact Form
-  const form = document.getElementById("contact-form");
+  // Form Submission
+  const form = document.getElementById("add-admin-form");
   const formMessage = document.getElementById("formMessage");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    formMessage.textContent = "Message sent successfully!";
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+    if (password !== confirmPassword) {
+      formMessage.textContent = "Passwords do not match!";
+      formMessage.className = "form-message error";
+      return;
+    }
+    formMessage.textContent = "Admin added successfully!";
     formMessage.className = "form-message success";
     form.reset();
-    setTimeout(() => {
-      formMessage.className = "form-message";
-      formMessage.textContent = "";
-    }, 3000);
   });
 
-  // Cart Modal
+  // Cart Modal Update
   const cartModal = document.getElementById("cartModal");
   if (!window.cartManager) {
-    console.error("cartManager not found. Ensure cart.js is loaded.");
+    console.error("cartManager not found. Ensure cart.js is loaded first.");
     return;
   }
   cartModal.addEventListener("show.bs.modal", () => {
@@ -119,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Routing
+  // Routing with Loading Animation
   function handleRouting(e) {
     const link = e.target.closest("a[href]");
     if (!link || link.getAttribute("data-bs-toggle") === "modal") return;
@@ -134,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", handleRouting);
   });
 
-  document.getElementById("checkout").addEventListener("click", () => {
+  document.getElementById("checkout").addEventListener("click", (e) => {
     const cart = window.cartManager.getCart();
     if (cart.length === 0) {
       alert("Your cart is empty!");
@@ -146,6 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 500);
   });
 
-  // Initial Cart Update
+  // Initial UI Update
   window.cartManager.updateCartUI();
 });
