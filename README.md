@@ -25,30 +25,7 @@ Here’s a well-structured GitHub README for your Gateway Stream project based o
 - **Scripts**: Custom JS for cart management, routing, and animations
 - **Dependencies**: Particles.js (optional for background effects)
 
-## Project Structure
 
-```
-Gateway-Stream/
-├── Assets/
-│   ├── images/              # Logos and static assets
-│   ├── Js/                  # Global scripts (e.g., cart.js)
-│   ├── Pages/               # Page-specific files
-│   │   ├── about/           # About Us page
-│   │   ├── artist-form/     # Artist form page
-│   │   ├── artist-list/     # Artist list page
-│   │   ├── ContactUs/       # Contact Us page
-│   │   ├── create-form/     # Event creation form
-│   │   ├── create-list/     # Event list page
-│   │   ├── event-organiser/ # Event Organiser dashboard
-│   │   ├── faq/             # FAQ page
-│   │   ├── Home/            # Home page scripts
-│   │   ├── login/           # Admin login page
-│   │   ├── payment/         # Payment processing page
-│   │   └── js/              # Shared page scripts
-│   └── Styles/              # Global CSS (styles.css)
-├── index.html               # Main entry point
-└── README.md                # This file
-```
 
 ## Installation
 
